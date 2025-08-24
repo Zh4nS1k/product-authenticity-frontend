@@ -19,22 +19,31 @@ const LoginSchema = Yup.object().shape({
 
 const LoginPage = () => {
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const { login, isAnonymous, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAnonymous && !loading) {
-      navigate('/dashboard', { replace: true });
+    if (success) {
+      const timeout = setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 1500); // 1.5 сек на показ уведомления
+
+      return () => clearTimeout(timeout);
     }
-  }, [isAnonymous, loading, navigate]);
+  }, [success, navigate]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setError(null);
+    setSuccess(false);
+
     const result = await login(values.email, values.password);
     setSubmitting(false);
 
     if (!result.success) {
       setError(result.message);
+    } else {
+      setSuccess(true);
     }
   };
 
@@ -56,6 +65,7 @@ const LoginPage = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Login
       </Typography>
+
       {error && (
         <Alert
           severity="error"
@@ -63,6 +73,15 @@ const LoginPage = () => {
           onClose={() => setError(null)}
         />
       )}
+
+      {success && (
+        <Alert
+          severity="success"
+          message="Удачный логин!"
+          onClose={() => setSuccess(false)}
+        />
+      )}
+
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}

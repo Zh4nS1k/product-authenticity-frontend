@@ -14,6 +14,7 @@ import {
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 import { AuthContext } from '../context/AuthContext';
 import { checkBarcode } from '../api/barcode';
+import BarcodeScanner from '../components/barcode/BarcodeScanner';
 
 const BarcodeResult = ({ result }) => {
   return (
@@ -33,6 +34,7 @@ const BarcodeResult = ({ result }) => {
             </Badge>
           )}
         </CardTitle>
+
         <div className="mt-3">
           <p>
             <strong>Barcode:</strong> {result.barcode}
@@ -84,6 +86,7 @@ const CheckPage = () => {
               <CardTitle>
                 {isAnonymous ? 'Anonymous Barcode Check' : 'Barcode Check'}
               </CardTitle>
+
               {isAnonymous && (
                 <Alert variant="info" className="mb-3">
                   You are checking anonymously. Your history won't be saved.
@@ -105,10 +108,20 @@ const CheckPage = () => {
                     required
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" disabled={loading}>
+
+                {/* Barcode Scanner component */}
+                <BarcodeScanner onDetected={(scanned) => setBarcode(scanned)} />
+
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={loading}
+                  className="mt-3"
+                >
                   {loading ? 'Checking...' : 'Check Barcode'}
                 </Button>
               </Form>
+
               {error && (
                 <Alert variant="danger" className="mt-3">
                   {error}

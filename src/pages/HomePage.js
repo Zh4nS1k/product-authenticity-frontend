@@ -1,16 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Container,
   Card,
   CardBody,
   CardTitle,
+  CardText,
   Button,
   Row,
   Col,
   Spinner,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const HomePage = () => {
@@ -33,23 +33,50 @@ const HomePage = () => {
 
   return (
     <Container>
+      {/* Hero Section */}
+      <Card className="mb-4">
+        <Card.Img
+          variant="top"
+          src="https://cdn-dlbon.nitrocdn.com/ukVKTqjfWwKJxncFrKknFxIMxESHpjNh/assets/images/optimized/rev-9018230/www.asp.com.au/wp-content/uploads/2021/09/shutterstock_73529662.jpg"
+          alt="Barcode Scanner"
+          style={{
+            width: '100%',
+            height: '300px',
+            objectFit: 'cover',
+          }}
+        />
+        <CardBody>
+          <CardTitle as="h2">Easily Verify Product Authenticity</CardTitle>
+          <CardText>
+            Use our service to scan barcodes and ensure the originality of your
+            products.
+          </CardText>
+          <Button as={Link} to="/check" variant="primary">
+            Start Verification
+          </Button>
+        </CardBody>
+      </Card>
+
+      {/* Additional Content */}
       <Card className="mb-4">
         <CardBody>
-          <CardTitle as="h2">Welcome to Product Authenticity Checker</CardTitle>
-          <Card.Text>
+          <CardTitle as="h2">
+            Welcome to the Product Authenticity Checker
+          </CardTitle>
+          <CardText>
             {isAnonymous
               ? 'You are currently using the service anonymously.'
               : `Welcome back, ${user?.username}!`}
-          </Card.Text>
+          </CardText>
 
           <Row className="mt-4">
             <Col md={6} className="mb-3">
               <Card>
                 <CardBody>
                   <CardTitle>Check Product</CardTitle>
-                  <Card.Text>
+                  <CardText>
                     Verify if your product is original by entering its barcode.
-                  </Card.Text>
+                  </CardText>
                   <Button as={Link} to="/check" variant="primary">
                     Check Barcode
                   </Button>
@@ -62,10 +89,10 @@ const HomePage = () => {
                 <Card>
                   <CardBody>
                     <CardTitle>Create Account</CardTitle>
-                    <Card.Text>
+                    <CardText>
                       Register to save your verification history and access
                       additional features.
-                    </Card.Text>
+                    </CardText>
                     <Button
                       as={Link}
                       to="/register"
